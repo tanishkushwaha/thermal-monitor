@@ -34,13 +34,11 @@ function Monitor(props) {
 
   return(
     <>
-    <div className="display-container">
       <div className="display drac-bg-grey">
         <span className="temperature" style={myStyles}>
           {props.temperature}°C
         </span>
       </div>
-    </div>
     </>
   );
 }
