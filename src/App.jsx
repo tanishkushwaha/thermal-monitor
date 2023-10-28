@@ -112,16 +112,16 @@ function App() {
 
       <Divider color='purple' />
 
-      <Box width='full' style={{height: isPhoneView ? '70vh' : '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <Box width='full' style={{height: isPhoneView ? '70vh' : '85vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         
         <Box width='3xl' height={ isPhoneView ? 'sm' : 'lg' } color='blackSecondary' rounded='lg' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-          <Box color='black' display='flex' p={isPhoneView ? 'sm' : 'md'} rounded='lg' style={{width: isPhoneView ? '80%' : '70%', height: '90%', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column'}}>
+          <Box color='black' display='flex' p={isPhoneView ? 'sm' : 'md'} rounded='lg' style={{width: isPhoneView ? '85%' : '70%', height: '90%', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column'}}>
 
-            <Box display='flex' style={{justifyContent: 'space-between', width:'100%'}}>
+            <Box display='flex' style={{justifyContent: 'space-between', width: '100%'}}>
 
-              <Input onChange={handleInput} borderSize='md' size={isPhoneView ? 'sm' : 'md'} color='purple' placeholder='Enter Device IP' mb={isPhoneView ? 'xs' : 'md'} style={{width: isPhoneView? '70%' : '80%'}} /> 
-              <Button onClick={handleButtonClick} size={isPhoneView ? 'sm' : 'md'} color='purple' style={{WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)'}}>Enter</Button>
+              <Input onChange={handleInput} borderSize='md' size='md' color='purple' placeholder='Enter Device IP' mb={isPhoneView ? 'xs' : 'md'} style={{width: isPhoneView? '70%' : '80%'}} /> 
+              <Button onClick={handleButtonClick} size='md' color='purple' style={{WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)'}}>Enter</Button>
 
             </Box>
 
