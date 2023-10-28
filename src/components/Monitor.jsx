@@ -10,26 +10,19 @@ const tempColor = {
 
 function Monitor(props) {
 
-  let myStyles = {
-    color: tempColor.normal,
-    textShadow: `0 0 8px ${tempColor.normal}`
-  };
+  let myStyles = {};
 
   if(props.temperature < 20) {
     myStyles.color = tempColor.cold;
-    myStyles.textShadow = `0 0 8px ${tempColor.cold}`;
   }
   else if(props.temperature >= 20 && props.temperature < 30) {
     myStyles.color = tempColor.normal;
-    myStyles.textShadow = `0 0 8px ${tempColor.normal}`;
   }
   else if(props.temperature >= 30 && props.temperature < 40) {
     myStyles.color = tempColor.warm;
-    myStyles.textShadow = `0 0 8px ${tempColor.warm}`;
   }
   else {
     myStyles.color = tempColor.hot;
-    myStyles.textShadow = `0 0 8px ${tempColor.hot}`;
   }
 
   return(
