@@ -1,16 +1,18 @@
-import './Navbar.css';
+import { Box } from '@mui/material';
 
 const Navbar = () => {
-    return (
-        <div className="navbar drac-bg-black drac-text-white">
-            <div className="nav-logo">
-                Thermal
-                <div className="nav-logo-bg drac-bg-purple drac-text-black drac-ml-xxs">
-                    Monitor
-                </div>
-            </div>
-        </div>
-    );
+
+  return(
+    <Box sx={{bgcolor: 'background', height: '10vh', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontFamily: 'Bungee', fontSize: '1.5rem'}}>
+      <Box sx={{display: 'flex', justifyContent: 'center', gap: '0.5rem', color: 'white'}}>
+        Thermal
+        <Box sx={{bgcolor: 'primary.main', color: 'background', width: '9rem', borderRadius: '0.25rem'}}>
+          Monitor
+        </Box>
+      </Box>
+    </Box>
+
+  );
 };
 
 export default Navbar;

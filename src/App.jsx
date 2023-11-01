@@ -1,71 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
-import { Box, Divider, Input, Button } from 'dracula-ui';
+import { Tabs, Tab, Divider, Box } from '@mui/material';
 import './App.css';
 import Monitor from './components/Monitor';
 import Navbar from './components/Navbar';
 
 function App() {
-  const [temp, setTemp] = useState('- -');
+  const [monitorDisplay, setMonitorDisplay] = useState('');
   const [pingTimeoutId, setPingTimeoutId] = useState(null);
-  const [isPhoneView, setIsPhoneView] = useState(false);
-  const [inputIP, setInputIP] = useState('');
+  const [tempC, setTempC] = useState(null);
+  const [tempUnit, setTempUnit] = useState('°C');
   const [deviceConnected, setDeviceConnected] = useState(false);
 
   const pingTimeoutIdRef = useRef(pingTimeoutId);
-
-
-  // Media Query in JS
-
-  useEffect(() => {
-
-    const handleResize = () => {
-      setIsPhoneView(window.innerWidth < 600);
-    };
-  
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };  
-  }, []);
-
-
-  // UseRef for pointing to the current ping timeout state
-
-  useEffect(() => {
-    pingTimeoutIdRef.current = pingTimeoutId;
-  }, [pingTimeoutId]);
-
+  const tempUnitRef = useRef(tempUnit);
 
   // WebSocket
+  useEffect(() => {
 
-  // useEffect(() => {
-  //   // ws://192.168.117.135:81
-    
-    
-
-  //     return () => {
-  //       socket.close(1000);
-  //       clearInterval(intervalId);
-  //     };
-  //   }
-
-  // }, [inputIP]);
-
-
-  // Event Handlers
-
-  const handleInput = (e) => {
-    setInputIP(e.target.value);
-  };
-
-  const handleButtonClick = () => {
-    console.log(inputIP);
-
-    if(inputIP != '' && !deviceConnected) {
-
-      const socket = new WebSocket(`ws://${inputIP}:81`);
+    const socket = new WebSocket(`ws://192.168.117.135:81`);
   
       socket.onopen = () => {
         console.log('OPEN!');
@@ -77,7 +29,8 @@ function App() {
           const timeoutId = setTimeout(() => {
             console.log('No pong!');
             socket.close(1000);
-            setTemp('NR');
+            setMonitorDisplay('NR');
+            setDeviceConnected(false);
             clearInterval(intervalId);
     
           }, 5000);
@@ -93,16 +46,48 @@ function App() {
           clearTimeout(pingTimeoutIdRef.current);
         }
         else {
-          setTemp(msg.data);
+          console.log(tempUnitRef);
+          setTempC(msg.data);
         }
       };
   
       socket.onclose = (e) => {
         console.log('CLOSE!');
+        setMonitorDisplay('CL');
         setDeviceConnected(false);
-        setTemp('CL');
       };
+
+      return () => {
+
+        clearInterval(intervalId);
+        clearTimeout(pingTimeoutIdRef.current);
+
+      };
+
+  }, []);
+
+
+  // UseRef for pointing to the current ping timeout state
+  useEffect(() => {
+    pingTimeoutIdRef.current = pingTimeoutId;
+  }, [pingTimeoutId]);
+
+  useEffect(() => {
+    if(tempC != '- -' && deviceConnected) {
+
+      if(tempUnit === '°C') {
+        setMonitorDisplay(tempC);
+      }
+      if(tempUnit === '°F') {
+        setMonitorDisplay(parseInt(tempC * 9/5) + 32);
+      }
+
     }
+  }, [tempC, tempUnit]);
+
+
+  const handleTabSwitch = (e, newValue) => {
+    setTempUnit(newValue);
   };
 
 
@@ -110,22 +95,22 @@ function App() {
     <>
       <Navbar />
 
-      <Divider color='purple' />
+      <Divider sx={{bgcolor: 'primary.main'}} />
 
-      <Box width='full' style={{height: isPhoneView ? '70vh' : '85vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        
-        <Box width='3xl' height={ isPhoneView ? 'sm' : 'lg' } color='blackSecondary' rounded='lg' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <Box sx={{width: '100vw', height: {xs: '70vh', sm:'85vh'}, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-          <Box color='black' display='flex' p={isPhoneView ? 'sm' : 'md'} rounded='lg' style={{width: isPhoneView ? '85%' : '70%', height: '90%', alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column'}}>
+        <Box sx={{width: '50rem', height: {xs: '25rem', sm: '30rem'}, borderRadius: '1rem', bgcolor: 'backgroundSecondary', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-            <Box display='flex' style={{justifyContent: 'space-between', width: '100%'}}>
+          <Box sx={{bgcolor: 'background', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', borderRadius: '1rem', width: {xs: '85%', sm: '70%'}, height: '90%'}}>
 
-              <Input onChange={handleInput} borderSize='md' size='md' color='purple' placeholder='Enter Device IP' mb={isPhoneView ? 'xs' : 'md'} style={{width: isPhoneView? '70%' : '80%'}} /> 
-              <Button onClick={handleButtonClick} size='md' color='purple' style={{WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)'}}>Enter</Button>
+            <Tabs value={tempUnit} onChange={handleTabSwitch}>
+              
+              <Tab value='°C' label='Celsius' />
+              <Tab value='°F' label='Fahrenheit' />
 
-            </Box>
+            </Tabs>
 
-            <Monitor temperature={temp} /> 
+            <Monitor temperature={monitorDisplay} unit={tempUnit} /> 
 
           </Box>
 

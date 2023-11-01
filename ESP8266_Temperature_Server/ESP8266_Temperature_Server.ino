@@ -1,11 +1,12 @@
 #include <Arduino.h>
-
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
+#include <ESP8266WebServer.h>
 #include <WebSocketsServer.h>
 #include <Hash.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <FS.h>
 
 #define ONE_WIRE_BUS D3
 
@@ -17,6 +18,7 @@ String TEMPERATURE = "NA";
 
 ESP8266WiFiMulti WiFiMulti;
 
+ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
 
 #define USE_SERIAL Serial
@@ -63,7 +65,23 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
 }
 
+// Route handling functions
+void handleRoot() {
+//  server.send(200, "text/html", html);
+
+    Serial.println("Got a hit!");
+     
+    File file = SPIFFS.open("/index.html", "r");
+      if (file) {
+        server.streamFile(file, "text/html");
+        file.close();
+      } else {
+        server.send(404, "text/plain", "File not found");
+  }
+}
+
 void setup() {
+  
     // USE_SERIAL.begin(921600);
     USE_SERIAL.begin(115200);
     sensors.begin();
@@ -89,10 +107,26 @@ void setup() {
 
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
+
+    // SPIFFS
+    if (SPIFFS.begin()) {
+      Serial.println("SPIFFS mounted");
+    } else {
+      Serial.println("Failed to mount SPIFFS");
+      return;
+    }
+
+    // WebServer Routes
+    server.on("/", handleRoot);
+
+    // Start the server
+    server.begin();
+    Serial.println("HTTP server started");
 }
 
 void loop() 
 {
+  server.handleClient();
   webSocket.loop();
 
   sensors.requestTemperatures(); 
@@ -101,8 +135,6 @@ void loop()
 
   if(tempC != DEVICE_DISCONNECTED_C) 
   {
-    // Serial.println(tempC);
-
     if(String((int) tempC) != TEMPERATURE) {
       Serial.println(tempC);
       TEMPERATURE = String((int) tempC);
@@ -114,5 +146,3 @@ void loop()
     webSocket.broadcastTXT("NA");
   }
 }
-
-
