@@ -10,17 +10,25 @@ const draculaTtheme = createTheme({
 
     backgroundSecondary: drac.blackSecondary,
 
+    common: {
+      black: drac.black,
+      white: drac.white
+    },
+
     primary: {
-      main: drac.purple
+      main: drac.purple,
+      contrastText: drac.black
     },
 
     secondary: {
-      main: drac.cyan
+      main: drac.cyan,
+      contrastText: drac.black
     },
 
     text: {
       primary: drac.white,
-      secondary: drac.white
+      secondary: drac.white,
+      disabled: drac.red
     },
 
     others: {

@@ -122,6 +122,7 @@ void setup() {
     // Start the server
     server.begin();
     Serial.println("HTTP server started");
+    Serial.println(WiFi.localIP());
 }
 
 void loop() 

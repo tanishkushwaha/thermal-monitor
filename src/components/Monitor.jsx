@@ -14,34 +14,17 @@ function Monitor(props) {
 
   let myStyles = {};
 
-  if(props.unit === '°C') {
-    if(props.temperature < 20) {
-      myStyles.color = tempColor.cold;
-    }
-    else if(props.temperature >= 20 && props.temperature < 30) {
-      myStyles.color = tempColor.normal;
-    }
-    else if(props.temperature >= 30 && props.temperature < 40) {
-      myStyles.color = tempColor.warm;
-    }
-    else {
-      myStyles.color = tempColor.hot;
-    }
+  if(props.forColor < 20) {
+    myStyles.color = tempColor.cold;
   }
-
-  if(props.unit === '°F') {
-    if(props.temperature < 68) {
-      myStyles.color = tempColor.cold;
-    }
-    else if(props.temperature >= 68 && props.temperature < 86) {
-      myStyles.color = tempColor.normal;
-    }
-    else if(props.temperature >= 86 && props.temperature < 104) {
-      myStyles.color = tempColor.warm;
-    }
-    else {
-      myStyles.color = tempColor.hot;
-    }
+  else if(props.forColor >= 20 && props.forColor < 30) {
+    myStyles.color = tempColor.normal;
+  }
+  else if(props.forColor >= 30 && props.forColor < 40) {
+    myStyles.color = tempColor.warm;
+  }
+  else {
+    myStyles.color = tempColor.hot;
   }
 
 

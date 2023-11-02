@@ -3,6 +3,7 @@ import { Tabs, Tab, Divider, Box } from '@mui/material';
 import './App.css';
 import Monitor from './components/Monitor';
 import Navbar from './components/Navbar';
+import IPPrompt from './components/IPPrompt';
 
 function App() {
   const [monitorDisplay, setMonitorDisplay] = useState('');
@@ -10,23 +11,25 @@ function App() {
   const [tempC, setTempC] = useState(null);
   const [tempUnit, setTempUnit] = useState('°C');
   const [deviceConnected, setDeviceConnected] = useState(false);
+  const [ipAddress, setIpAddress] = useState(null);
 
   const pingTimeoutIdRef = useRef(pingTimeoutId);
-  const tempUnitRef = useRef(tempUnit);
 
   // WebSocket
   useEffect(() => {
 
-    const socket = new WebSocket(`ws://192.168.117.135:81`);
+    const socket = new WebSocket(`ws://${ipAddress}:81`);
+    let intervalId = null;
+    let timeoutId = null;
   
       socket.onopen = () => {
         console.log('OPEN!');
         setDeviceConnected(true);
         
-        const intervalId = setInterval(() => {
+        intervalId = setInterval(() => {
           socket.send('ping');
     
-          const timeoutId = setTimeout(() => {
+          timeoutId = setTimeout(() => {
             console.log('No pong!');
             socket.close(1000);
             setMonitorDisplay('NR');
@@ -46,7 +49,6 @@ function App() {
           clearTimeout(pingTimeoutIdRef.current);
         }
         else {
-          console.log(tempUnitRef);
           setTempC(msg.data);
         }
       };
@@ -59,12 +61,13 @@ function App() {
 
       return () => {
 
-        clearInterval(intervalId);
+        if(intervalId)
+          clearInterval(intervalId);
         clearTimeout(pingTimeoutIdRef.current);
 
       };
 
-  }, []);
+  }, [ipAddress]);
 
 
   // UseRef for pointing to the current ping timeout state
@@ -103,14 +106,24 @@ function App() {
 
           <Box sx={{bgcolor: 'background', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', borderRadius: '1rem', width: {xs: '85%', sm: '70%'}, height: '90%'}}>
 
-            <Tabs value={tempUnit} onChange={handleTabSwitch}>
-              
-              <Tab value='°C' label='Celsius' />
-              <Tab value='°F' label='Fahrenheit' />
+            {ipAddress === null ? (
 
-            </Tabs>
+              <IPPrompt setIpAddress={setIpAddress} />
 
-            <Monitor temperature={monitorDisplay} unit={tempUnit} /> 
+            ) : (
+
+              <>
+                <Tabs value={tempUnit} onChange={handleTabSwitch}>
+                
+                <Tab value='°C' label='Celsius' />
+                <Tab value='°F' label='Fahrenheit' />
+
+                </Tabs>
+
+                <Monitor temperature={monitorDisplay} unit={tempUnit} forColor={tempC} />
+              </>
+
+            )}
 
           </Box>
 
