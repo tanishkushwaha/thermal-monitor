@@ -18,13 +18,12 @@ const IPPrompt = ({ setIpAddress }) => {
       <Box 
         sx={
             {
-              p: '1 rem',
               bgcolor: 'backgroundSecondary',
               display: 'flex', 
-              justifyContent: 'space-around', 
-              gap: '1rem',
+              flexDirection: {xs: 'column', sm: 'row'},
+              justifyContent: 'space-around',
               alignItems: 'center', 
-              width: '80%',
+              width: '90%',
               height: '30%',
               borderRadius: '1rem'
             }
@@ -38,12 +37,18 @@ const IPPrompt = ({ setIpAddress }) => {
           variant="outlined"
           sx={
             {
-              width: '20rem'
+              width: '70%'
             }
           }
         />
 
-        <Button variant="contained" color="primary" size="medium" onClick={handleClick}>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          size="medium" 
+          onClick={handleClick}
+          sx={{ width: {xs: '70%', sm: '20%'} }}
+        >
           Enter
         </Button>
 

@@ -102,9 +102,9 @@ function App() {
 
       <Box sx={{width: '100vw', height: {xs: '70vh', sm:'85vh'}, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-        <Box sx={{width: '50rem', height: {xs: '25rem', sm: '30rem'}, borderRadius: '1rem', bgcolor: 'backgroundSecondary', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Box sx={{width: {xs: '90%', sm: '50%'}, height: {xs: '25rem', sm: '30rem'}, borderRadius: '1rem', bgcolor: 'backgroundSecondary', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-          <Box sx={{bgcolor: 'background', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', borderRadius: '1rem', width: {xs: '85%', sm: '70%'}, height: '90%'}}>
+          <Box sx={{bgcolor: 'background', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', borderRadius: '1rem', width: {xs: '85%', sm: '80%'}, height: '90%'}}>
 
             {ipAddress === null ? (
 
