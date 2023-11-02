@@ -8,14 +8,11 @@ A simple real-time temperature monitoring system in which an ESP8266 NodeMCU act
 
 ![circuit-diagram](images/circuit_diagram.png)
 
-### Desktop
-
-![desktop-web-client](images/desktop_1.png)
-![desktop-web-client](images/desktop_2.png)
-![desktop-web-client](images/desktop_3.png)
-
 ### Phone
 
-![phone-web-client](images/phone_1.jpg)
-![phone-web-client](images/phone_2.jpg)
-![phone-web-client](images/phone_3.jpg)
+![phone-web-client](images/phone.png)
+
+### Desktop
+
+![desktop-web-client](images/desktop.png)
+
