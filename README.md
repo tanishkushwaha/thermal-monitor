@@ -16,6 +16,6 @@ A simple real-time temperature monitoring system in which an ESP8266 NodeMCU act
 
 ### Phone
 
-![phone-web-client](images/phone_1.png)
-![phone-web-client](images/phone_2.png)
-![phone-web-client](images/phone_3.png)
+![phone-web-client](images/phone_1.jpg)
+![phone-web-client](images/phone_2.jpg)
+![phone-web-client](images/phone_3.jpg)
